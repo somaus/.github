@@ -37,6 +37,40 @@
 
 로그인 없이도 분석·탐지·상담을 체험할 수 있고, 기록을 저장하려면 로그인합니다.
 
+### 서비스 흐름
+
+```mermaid
+flowchart LR
+  U(("사용자"))
+
+  subgraph PREVENT["① 예방 · 사진 올리기 전"]
+    direction TB
+    P1["사진 위험도 분석"] --> P2["이미지 보호 처리"]
+  end
+
+  subgraph DETECT["② 탐지 · 이미 퍼졌을 때"]
+    direction TB
+    D1["얼굴 도용·딥페이크 탐지"] --> D2["판단 근거 확인"]
+  end
+
+  subgraph RESPOND["③ 대응 · 피해가 생겼을 때"]
+    direction TB
+    R1["익명 상담 챗봇"] --> R2["신고 문서 작성"] --> R3["기관 연결"]
+  end
+
+  U --> PREVENT
+  PREVENT -- "이미 퍼졌다면" --> DETECT
+  DETECT -- "피해가 의심되면" --> RESPOND
+
+  classDef user fill:#2d4b66,stroke:#2d4b66,color:#ffffff
+  classDef step fill:#ffffff,stroke:#9bbbd5,color:#1c3042
+  class U user
+  class P1,P2,D1,D2,R1,R2,R3 step
+  style PREVENT fill:#edf3f8,stroke:#bcd1e3,color:#2d4b66
+  style DETECT fill:#f5eaf9,stroke:#d4b7e6,color:#5f4870
+  style RESPOND fill:#faf4fc,stroke:#e2bfea,color:#5f4870
+```
+
 ## 다국어 지원
 
 국내에 거주하는 외국인도 같은 피해를 겪을 수 있기에, 화면과 AI 응답 모두 **한국어 · English · 日本語 · 简体中文**을 지원합니다.
@@ -56,6 +90,58 @@
 | **Backend** | Spring Boot 3.4 · Java 21 · Spring Security + JWT · MySQL |
 | **AI** | Groq 호스팅 LLM (상담 챗봇) · Qwen 계열 비전 모델 (위험도 분석·딥페이크 탐지) |
 | **Infra** | Vercel (Web) · Docker (Server) |
+
+### 시스템 구조
+
+```mermaid
+flowchart TB
+  USER(["사용자 브라우저"])
+
+  subgraph FE["Signal-web · Vercel"]
+    WEB["Next.js 16 · React 19<br/>4개 언어 화면"]
+  end
+
+  subgraph BE["Signal-server · Docker"]
+    direction LR
+    API["Spring Boot 3.4<br/>REST API · JWT 인증"]
+    RULE["규칙 기반 로직<br/>위기 감지 · 기관 안내"]
+    NOISE["이미지 보호<br/>노이즈 삽입"]
+    API --- RULE
+    API --- NOISE
+  end
+
+  subgraph AI["Groq Cloud"]
+    direction LR
+    CHAT["챗봇 LLM<br/>상담 답변"]
+    VISION["비전 모델<br/>위험도 분석 · 딥페이크 탐지"]
+  end
+
+  DB[("MySQL")]
+  FILES[("업로드 파일")]
+
+  MAIL["Gmail SMTP<br/>인증번호 메일"]
+  LAB["protection-lab<br/>적대적 노이즈 · 선택"]
+
+  USER --> WEB
+  WEB -- "REST · Accept-Language" --> API
+  API --> AI
+  API --> DB
+  API --> FILES
+  API --> MAIL
+  API -.-> LAB
+
+  classDef core fill:#2d4b66,stroke:#2d4b66,color:#ffffff
+  classDef inner fill:#ffffff,stroke:#9bbbd5,color:#1c3042
+  classDef ext fill:#ffffff,stroke:#bc9dcf,color:#5f4870
+  classDef opt fill:#ffffff,stroke:#bc9dcf,color:#86689c,stroke-dasharray:4 3
+  class WEB,API core
+  class RULE,NOISE,USER inner
+  class CHAT,VISION,DB,FILES,MAIL ext
+  class LAB opt
+  style FE fill:#edf3f8,stroke:#bcd1e3,color:#2d4b66
+  style BE fill:#edf3f8,stroke:#bcd1e3,color:#2d4b66
+  style AI fill:#faf4fc,stroke:#e2bfea,color:#5f4870
+```
 
 > AI 분석·탐지 결과는 범용 AI 모델의 판단으로, 확정 판정이 아닌 **참고 지표**로 제공합니다. 위기 감지와 기관 안내는 AI가 아닌 규칙 기반 로직이 담당합니다.
 
