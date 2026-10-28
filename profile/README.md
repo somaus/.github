@@ -2,6 +2,10 @@
   <img src="./banner.png" alt="Signal — 당신이 보낸 구조 신호, Signal이 안전한 일상으로 답합니다." width="100%">
 </p>
 
+<p align="center">
+  <b>한국어</b> | <a href="https://github.com/somaus/.github/blob/main/profile/README.en.md">English</a>
+</p>
+
 <h3 align="center">AI 기반 딥페이크 피해 예방·탐지·대응 서비스</h3>
 
 <p align="center">
