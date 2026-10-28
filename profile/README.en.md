@@ -39,37 +39,9 @@ You can try analysis, detection, and chat without logging in. Log in to save you
 
 ### Service flow
 
-```mermaid
-flowchart LR
-  U(("User"))
-
-  subgraph PREVENT["① Prevent · before posting"]
-    direction TB
-    P1["Photo risk analysis"] --> P2["Image protection"]
-  end
-
-  subgraph DETECT["② Detect · after it spreads"]
-    direction TB
-    D1["Face theft & deepfake detection"] --> D2["Review the evidence"]
-  end
-
-  subgraph RESPOND["③ Respond · when harmed"]
-    direction TB
-    R1["Anonymous chatbot"] --> R2["Report drafting"] --> R3["Agency connection"]
-  end
-
-  U --> PREVENT
-  PREVENT -- "If it has spread" --> DETECT
-  DETECT -- "If harm is suspected" --> RESPOND
-
-  classDef user fill:#2d4b66,stroke:#2d4b66,color:#ffffff
-  classDef step fill:#ffffff,stroke:#9bbbd5,color:#1c3042
-  class U user
-  class P1,P2,D1,D2,R1,R2,R3 step
-  style PREVENT fill:#edf3f8,stroke:#bcd1e3,color:#2d4b66
-  style DETECT fill:#f5eaf9,stroke:#d4b7e6,color:#5f4870
-  style RESPOND fill:#faf4fc,stroke:#e2bfea,color:#5f4870
-```
+<p align="center">
+  <img src="./flow-en.png" alt="Service flow: prevent → detect → respond" width="100%">
+</p>
 
 ## Multilingual support
 
@@ -93,55 +65,9 @@ Foreign residents in Korea can face the same harm, so both the interface and AI 
 
 ### System architecture
 
-```mermaid
-flowchart TB
-  USER(["User browser"])
-
-  subgraph FE["Signal-web · Vercel"]
-    WEB["Next.js 16 · React 19<br/>4-language UI"]
-  end
-
-  subgraph BE["Signal-server · Docker"]
-    direction LR
-    API["Spring Boot 3.4<br/>REST API · JWT auth"]
-    RULE["Rule-based logic<br/>crisis detection · agency guidance"]
-    NOISE["Image protection<br/>noise injection"]
-    API --- RULE
-    API --- NOISE
-  end
-
-  subgraph AI["Groq Cloud"]
-    direction LR
-    CHAT["Chatbot LLM<br/>counseling replies"]
-    VISION["Vision model<br/>risk analysis · deepfake detection"]
-  end
-
-  DB[("MySQL")]
-  FILES[("Uploaded files")]
-
-  MAIL["Gmail SMTP<br/>verification email"]
-  LAB["protection-lab<br/>adversarial noise · optional"]
-
-  USER --> WEB
-  WEB -- "REST · Accept-Language" --> API
-  API --> AI
-  API --> DB
-  API --> FILES
-  API --> MAIL
-  API -.-> LAB
-
-  classDef core fill:#2d4b66,stroke:#2d4b66,color:#ffffff
-  classDef inner fill:#ffffff,stroke:#9bbbd5,color:#1c3042
-  classDef ext fill:#ffffff,stroke:#bc9dcf,color:#5f4870
-  classDef opt fill:#ffffff,stroke:#bc9dcf,color:#86689c,stroke-dasharray:4 3
-  class WEB,API core
-  class RULE,NOISE,USER inner
-  class CHAT,VISION,DB,FILES,MAIL ext
-  class LAB opt
-  style FE fill:#edf3f8,stroke:#bcd1e3,color:#2d4b66
-  style BE fill:#edf3f8,stroke:#bcd1e3,color:#2d4b66
-  style AI fill:#faf4fc,stroke:#e2bfea,color:#5f4870
-```
+<p align="center">
+  <img src="./system-en.png" alt="System architecture: browser → Signal-web → Signal-server → Groq, MySQL, Gmail" width="100%">
+</p>
 
 > AI analysis and detection results come from general-purpose AI models and are provided as **reference indicators**, not definitive judgments. Crisis detection and agency guidance are handled by rule-based logic, not AI.
 
