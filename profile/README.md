@@ -59,8 +59,8 @@
 
 <table>
   <tr>
-    <td align="center"><a href="https://github.com/ryusuye0n"><img src="https://github.com/hyooeunn.png" width="88" alt="hyooeunn"><br><sub><b>이효은</b></sub></a></td>
-    <td align="center"><a href="[https://github.com/ryusuye0n](https://github.com/hyooeunn)"><img src="https://github.com/ryusuye0n.png" width="88" alt="ryusuye0n"><br><sub><b>류수연</b></sub></a></td>
+    <td align="center"><a href="https://github.com/ryusuye0n"><img src="https://github.com/ryusuye0n.png" width="88" alt="ryusuye0n"><br><sub><b>류수연</b></sub></a></td>
+    <td align="center"><a href="https://github.com/hyooeunn"><img src="https://github.com/hyooeunn.png" width="88" alt="hyooeunn"><br><sub><b>이효은</b></sub></a></td>
     <td align="center"><a href="https://github.com/jyx-07"><img src="https://github.com/jyx-07.png" width="88" alt="jyx-07"><br><sub><b>종윤</b></sub></a></td>
     <td align="center"><a href="https://github.com/hyeinggu"><img src="https://github.com/hyeinggu.png" width="88" alt="hyeinggu"><br><sub><b>hyeinggu</b></sub></a></td>
   </tr>
